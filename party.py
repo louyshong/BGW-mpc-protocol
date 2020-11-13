@@ -1,12 +1,56 @@
+from circuit import ALL_PARTIES, DEGREE
+from modprime import randint, summation, product
 
-def split_share(n):
+def split_share(share):
     '''
-    Splits share into n shares
+    Splits share into N_PARTIES shares. 
     '''
+    # generate a random polynomial 
+    polynomial = []
+    
+    # constant term is = share
+    polynomial.append(share)
+
+    for deg in range(DEGREE):
+        polynomial.append(randint())
+
+    # allocate subshares for all parties
+    subshares = {}
+    for p in ALL_PARTIES:
+        terms = [coeff * (p ** i) for i, coeff in enumerate(polynomial)]
+        subshares[p] = summation(terms)
+
+    return subshares
+
 def lagrange_interp(subshares):
     '''
     Recombine subshares
     '''
+    recomb_vector = {}
+
+    for p, subshare in subshares.items():
+        numer_list = []
+        denom_list = []
+        
+        for other_p, _ in subshares.items():
+            if other_p != p: 
+                numer_list.append(other_p)
+                denom_list.append(other_p - subshare)    
+
+        numer = product(numer_list)
+        denom = product(denom_list)
+
+        recomb_vector[p] = numer / denom
+
+    terms = []
+
+    for p, subshare in subshares.items():
+        terms.append(recomb_vector[p] * subshare)
+        
+    share = summation(terms)
+
+    return share
+
 def evaluate_mul():
     '''
     Evaluates single MUL gate
