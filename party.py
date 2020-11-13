@@ -1,5 +1,6 @@
 from circuit import ALL_PARTIES, DEGREE
-from modprime import randint, summation, product
+from modprime import randint, summation, product, div
+import functools
 
 def split_share(share):
     '''
@@ -28,25 +29,25 @@ def lagrange_interp(subshares):
     '''
     recomb_vector = {}
 
-    for p, subshare in subshares.items():
+    for p, _ in subshares.items():
         numer_list = []
         denom_list = []
         
         for other_p, _ in subshares.items():
             if other_p != p: 
                 numer_list.append(other_p)
-                denom_list.append(other_p - subshare)    
+                denom_list.append(other_p - p)    
 
         numer = product(numer_list)
         denom = product(denom_list)
 
-        recomb_vector[p] = numer / denom
+        recomb_vector[p] = div(numer, denom)
 
     terms = []
 
     for p, subshare in subshares.items():
         terms.append(recomb_vector[p] * subshare)
-        
+
     share = summation(terms)
 
     return share
