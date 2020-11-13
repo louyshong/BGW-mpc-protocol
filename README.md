@@ -1,2 +1,2 @@
-# BGW-secret-sharing-protocol
+# BGW-mpc-protocol
 Coursework for privacy engineering 
