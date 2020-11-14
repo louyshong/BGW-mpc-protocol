@@ -92,7 +92,7 @@ def bgw_protocol(party_no, private_value, network):
     for p in ALL_PARTIES: 
         # assuming each party has an INP gate with 
         # the same party_no
-        network.send_share(subshares[p], p, p)
+        network.send_share(subshares[p], party_no, p)
 
     # evaluate circuit
     output = evaluate_circuit(party_no, network)
