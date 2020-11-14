@@ -62,13 +62,13 @@ def evaluate_mul(a, b, gate_no, network):
     '''
     share = mul(a,b)
     subshares = split_share(share)
-    recievedshares = []
+    receivedshares = {}
 
     for p in ALL_PARTIES:
         network.send_share(subshares[p], gate_no, p)
-        recievedshares.append(network.recieve_share(p, gate_no))
+        receivedshares[p]=network.receive_share(p, gate_no)
 
-    outputshare = lagrange_interp(recievedshares)
+    outputshare = lagrange_interp(receivedshares)
 
     return outputshare
 
