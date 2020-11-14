@@ -2,6 +2,7 @@ from circuit import ALL_PARTIES, DEGREE
 from modprime import *
 from network import *
 import functools
+from log import * 
 
 def split_share(share):
     '''
@@ -86,11 +87,29 @@ def evaluate_circuit():
 def bgw_protocol(party_no, private_value, network):
 
     # split and distribute shares to all parties (including self)
+    subshares = split_share(private_value)
+
+    for p in ALL_PARTIES: 
+        # assuming each party has an INP gate with 
+        # the same party_no
+        network.send_share(subshares[p], p, p)
 
     # evaluate circuit
+    output = evaluate_circuit(party_no, network)
 
     # broadcast circuit output to all parties (including self)
+    # N_GATES + 2 is the circuit output wire
+    for p in ALL_PARTIES: 
+        network.send_share(output, N_GATES + 2, p)
 
     # receive outputs from all parties (including self)
+    suboutputs = {}
+
+    for p in ALL_PARTIES: 
+        suboutputs[p] = network.receive_share(p, N_GATES + 2)
 
     # combine outputs 
+    output = lagrange_interp(suboutputs)
+
+    log.init_logging(party_no)
+    log.write(output)
