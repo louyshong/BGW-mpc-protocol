@@ -17,7 +17,6 @@ def split_share(share):
     for deg in range(DEGREE):
         polynomial.append(randint())
 
-    print(polynomial)
     # allocate subshares for all parties
     subshares = {}
     for p in ALL_PARTIES:
