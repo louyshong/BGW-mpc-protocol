@@ -82,7 +82,7 @@ def evaluate_circuit(party_no, network):
     '''
     Evaluates whole circuit
     '''
-    gate_inputs = {i: {k: None for k in range(1,3)} for i in range(1, N_GATES +2)}
+    gate_inputs = {i: {k: None for k in range(1,3)} for i in range(1, N_GATES + 2)}
 
     for g, (kind, output_gate, input_index) in GATES.items() :
 

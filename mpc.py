@@ -6,7 +6,7 @@ import subprocess # Popen
 import sys        # argv
 import time       # sleep
 
-from circuit import ALL_PARTIES, CIRCUIT, N_PARTIES, PRIVATE_VALUES
+from circuit import ALL_PARTIES, CIRCUIT, N_PARTIES, PRIVATE_VALUES, FUNCTION_RESULT
 from config  import LOCAL, MAX_TIME, PKILL_PATTERN, REPEATABLE_RANDOM_NUMBERS
 from log     import init_logging
 from party   import bgw_protocol
@@ -18,6 +18,7 @@ from network import Network
 
 def main():
   print(f'CIRCUIT {CIRCUIT}')
+  print(f'ANSWER {FUNCTION_RESULT}')
 
   # create MPC party processes
   parties = {}
