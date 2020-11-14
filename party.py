@@ -1,4 +1,4 @@
-from circuit import ALL_PARTIES, DEGREE
+from circuit import *
 from modprime import *
 from network import *
 import functools
@@ -63,10 +63,11 @@ def evaluate_mul(a, b, gate_no, network):
     '''
     share = mul(a,b)
     subshares = split_share(share)
+    receivedshares = {}
 
     for p in ALL_PARTIES:
         network.send_share(subshares[p], gate_no, p)
-        network.receive_share(p, gate_no)
+        receivedshares[p] = network.receive_share(p, gate_no)
 
     outputshare = lagrange_interp(network.shares)
 
@@ -82,18 +83,23 @@ def evaluate_circuit(party_no, network):
     '''
     Evaluates whole circuit
     '''
-    input_pairs = {}
+    gate_inputs = {}
 
     for g in range(len(GATES)) :
         kind, output_gate, input_index = GATES[g]
 
-        if kind == INP:
-            input_pairs[output_gate]=
-        elif kind == ADD:
-            evaluate_add(input_pairs[g])
-        elif kind == MUL:
-            evaluate_mul()
-    return output
+        if kind == 0:
+            result = network.receive_share(g, party_no)
+
+        elif kind == 1:
+            result = evaluate_add(gate_inputs[g][0], gate_inputs[g][1])
+
+        elif kind == 2:
+            result = evaluate_mul(gate_inputs[g][0], gate_inputs[g][1])
+        
+        gate_inputs[output_gate].append(result)
+
+    return result
 
 def bgw_protocol(party_no, private_value, network):
 
