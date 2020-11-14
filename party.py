@@ -86,7 +86,7 @@ def evaluate_circuit(party_no, network):
     gate_inputs = {}
 
     for g in range(len(GATES)) :
-        kind, output_gate, input_index = GATES[g]
+        kind, output_gate, _ = GATES[g]
 
         if kind == 0:
             result = network.receive_share(g, party_no)
@@ -95,7 +95,7 @@ def evaluate_circuit(party_no, network):
             result = evaluate_add(gate_inputs[g][0], gate_inputs[g][1])
 
         elif kind == 2:
-            result = evaluate_mul(gate_inputs[g][0], gate_inputs[g][1])
+            result = evaluate_mul(gate_inputs[g][0], gate_inputs[g][1], g, network)
         
         gate_inputs[output_gate].append(result)
 
