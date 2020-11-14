@@ -1,5 +1,6 @@
 from circuit import ALL_PARTIES, DEGREE
-from modprime import randint, summation, product, div
+from modprime import *
+from network import *
 import functools
 
 def split_share(share):
@@ -52,14 +53,28 @@ def lagrange_interp(subshares):
 
     return share
 
-def evaluate_mul():
+def evaluate_mul(a, b, gate_no, network):
     '''
     Evaluates single MUL gate
     '''
-def evaluate_add():
+    share = mul(a,b)
+    subshares = split_share(share)
+    recievedshares = []
+
+    for p in ALL_PARTIES:
+        network.send_share(subshares[p], gate_no, p)
+        recievedshares.append(network.recieve_share(p, gate_no))
+
+    outputshare = lagrange_interp(recievedshares)
+
+    return outputshare
+
+def evaluate_add(a, b):
     '''
     Evaluates single ADD gate
     '''
+    return add(a,b)
+
 def evaluate_circuit():
     '''
     Evaluates whole circuit
