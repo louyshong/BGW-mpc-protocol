@@ -100,13 +100,13 @@ def bgw_protocol(party_no, private_value, network):
     # broadcast circuit output to all parties (including self)
     # N_GATES + 2 is the circuit output wire
     for p in ALL_PARTIES: 
-        network.send_share(output, N_GATES + 2, p)
+        network.send_share(output, N_GATES + 1, p)
 
     # receive outputs from all parties (including self)
     suboutputs = {}
 
     for p in ALL_PARTIES: 
-        suboutputs[p] = network.receive_share(p, N_GATES + 2)
+        suboutputs[p] = network.receive_share(p, N_GATES + 1)
 
     # combine outputs 
     output = lagrange_interp(suboutputs)
