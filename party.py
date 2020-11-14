@@ -2,7 +2,7 @@ from circuit import *
 from modprime import *
 from network import *
 import functools
-from log import * 
+import log
 
 def split_share(share):
     '''
