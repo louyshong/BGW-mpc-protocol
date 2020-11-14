@@ -16,6 +16,7 @@ def split_share(share):
     for deg in range(DEGREE):
         polynomial.append(randint())
 
+    print(polynomial)
     # allocate subshares for all parties
     subshares = {}
     for p in ALL_PARTIES:
@@ -30,6 +31,7 @@ def lagrange_interp(subshares):
     '''
     recomb_vector = {}
 
+    # find recombination vector
     for p, _ in subshares.items():
         numer_list = []
         denom_list = []
@@ -46,6 +48,7 @@ def lagrange_interp(subshares):
 
     terms = []
 
+    # do lagrange interpolation
     for p, subshare in subshares.items():
         terms.append(recomb_vector[p] * subshare)
 
