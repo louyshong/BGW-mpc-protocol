@@ -2,7 +2,7 @@ from circuit import *
 from modprime import *
 from network import *
 import functools
-import log
+from log import * 
 
 def split_share(share):
     '''
@@ -126,5 +126,5 @@ def bgw_protocol(party_no, private_value, network):
     # combine outputs 
     output = lagrange_interp(suboutputs)
 
-    log.init_logging(party_no)
-    log.write(output)
+    init_logging(party_no)
+    write(output)
