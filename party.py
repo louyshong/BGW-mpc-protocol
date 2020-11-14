@@ -68,7 +68,7 @@ def evaluate_mul(a, b, gate_no, network):
         network.send_share(subshares[p], gate_no, p)
         receivedshares[p] = network.receive_share(p, gate_no)
 
-    outputshare = lagrange_interp(network.shares)
+    outputshare = lagrange_interp(receivedshares)
 
     return outputshare
 
