@@ -84,3 +84,13 @@ def evaluate_circuit():
     '''
 
 def bgw_protocol(party_no, private_value, network):
+
+    # split and distribute shares to all parties (including self)
+
+    # evaluate circuit
+
+    # broadcast circuit output to all parties (including self)
+
+    # receive outputs from all parties (including self)
+
+    # combine outputs 
