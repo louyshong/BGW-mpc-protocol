@@ -125,6 +125,5 @@ def bgw_protocol(party_no, private_value, network):
 
     # combine outputs 
     output = lagrange_interp(suboutputs)
-
-    init_logging(party_no)
+    
     write(output)
