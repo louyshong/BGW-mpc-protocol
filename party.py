@@ -72,6 +72,22 @@ def evaluate_mul(a, b, gate_no, network):
 
     return outputshare
 
+def evaluate_div(a, party_no, gate_no, network):
+    '''
+    Evaluates single DIV by party_no gate
+    '''
+    share = div(a,party_no)
+    subshares = split_share(share)
+    receivedshares = {}
+
+    for p in ALL_PARTIES:
+        network.send_share(subshares[p], gate_no, p)
+        receivedshares[p] = network.receive_share(p, gate_no)
+
+    outputshare = lagrange_interp(receivedshares)
+
+    return outputshare
+
 def evaluate_add(a, b):
     '''
     Evaluates single ADD gate
@@ -94,6 +110,9 @@ def evaluate_circuit(party_no, network):
 
         elif kind == MUL:
             result = evaluate_mul(gate_inputs[g][1], gate_inputs[g][2], g, network)
+
+        elif kind == DIV:
+            result = evaluate_div(gate_inputs[g][1], party_no, g, network)
         
         gate_inputs[output_gate][input_index]= result
 

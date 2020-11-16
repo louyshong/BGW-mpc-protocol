@@ -5,7 +5,7 @@
 CIRCUIT = 3
 
 # Gate types
-INP, ADD, MUL = (0,1,2)
+INP, ADD, MUL, DIV = (0,1,2,3)
 
 # Define MPC Function as an addition/multiplication circuit. INPut gates 
 # precede ADD/MUL gates. ADD/MUL gates are defined in evaluation order. 
@@ -92,25 +92,24 @@ elif CIRCUIT == 3:	# add your circuit(s) here
 
   inverse = inv(6)
 
-  PRIVATE_VALUES = {1:4, 2:5, 3:3, 4:2, 5:7, 6:3, 7: inverse}
+  PRIVATE_VALUES = {1:4, 2:5, 3:3, 4:2, 5:7, 6:3}
 
   def function(x):	# function being evaluated by parties
     return (div((x[1] + x[2] + x[3] + x[4] + x[5] + x[6]), 6)) % PRIME
 
   GATES = {
-    1:  (INP, 8, 1),
-    2:  (INP, 8, 2),
-    3:  (INP, 9, 2),
-    4:  (INP, 10, 2),
-    5:  (INP, 11, 2),
-    6:  (INP, 12, 2),
-    7:  (INP, 13, 2), 
+    1:  (INP, 7, 1),
+    2:  (INP, 7, 2),
+    3:  (INP, 8, 2),
+    4:  (INP, 9, 2),
+    5:  (INP, 10, 2),
+    6:  (INP, 11, 2),
+    7:  (ADD, 8, 1),
     8:  (ADD, 9, 1),
-    9:  (ADD, 10, 1),
+    9: (ADD, 10, 1),
     10: (ADD, 11, 1),
     11: (ADD, 12, 1),
-    12: (ADD, 13, 1),
-    13: (MUL, 14, 1)
+    12: (DIV, 13, 1)
   }
 
 # ___________________________________________________________________________
