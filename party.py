@@ -95,7 +95,7 @@ def evaluate_div(a, gate_no, network):
         network.send_share(subshares[p], gate_no, p)
         receivedshares[p] = network.receive_share(p, gate_no)
 
-    outputshare = lagrange_interp(receivedshares)
+    outputshare, _ = lagrange_interp(receivedshares)
 
     return outputshare
 
