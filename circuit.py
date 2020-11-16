@@ -91,9 +91,8 @@ elif CIRCUIT == 3:	# add your circuit(s) here
     return (a * b) % PRIME
 
   inverse = inv(6)
-  print(inverse)
 
-  PRIVATE_VALUES = {1:3, 2:3, 3:3, 4:3, 5:3, 6:3, 7: inverse}
+  PRIVATE_VALUES = {1:4, 2:5, 3:3, 4:2, 5:7, 6:3, 7: inverse}
 
   def function(x):	# function being evaluated by parties
     return (div((x[1] + x[2] + x[3] + x[4] + x[5] + x[6]), 6)) % PRIME
