@@ -2,10 +2,10 @@
 # naranker dulay, dept of computing, imperial college, october 2020
 
 # Circuit below to evalute
-CIRCUIT = 1
+CIRCUIT = 3
 
 # Gate types
-INP, ADD, MUL = (0,1,2)
+INP, ADD, MUL, DIV = (0,1,2,3)
 
 # Define MPC Function as an addition/multiplication circuit. INPut gates 
 # precede ADD/MUL gates. ADD/MUL gates are defined in evaluation order. 
@@ -73,7 +73,44 @@ elif CIRCUIT == 2:	# factorial tree for 2^n parties
   tree(1, INPUTS)
 
 # ___________________________________________________________________________
-# elif CIRCUIT == 3:	# add your circuit(s) here
+elif CIRCUIT == 3:	# add your circuit(s) here
+
+  # polynomial prime - further primes at bottom of file
+  PRIME  = 101
+  # degree of polynominal - T in slides
+  DEGREE = 2
+
+  def inv(a):
+    # compute multiplicative inverse (mod p) using fermat's little theorem 
+    return pow(a, PRIME-2, PRIME)
+
+  def div(a, b):
+    return mul(a, inv(b))
+
+  def mul(a, b):
+    return (a * b) % PRIME
+
+  inverse = inv(6)
+
+  PRIVATE_VALUES = {1:4, 2:5, 3:3, 4:2, 5:7, 6:3}
+
+  def function(x):	# function being evaluated by parties
+    return (div((x[1] + x[2] + x[3] + x[4] + x[5] + x[6]), 6)) % PRIME
+
+  GATES = {
+    1:  (INP, 7, 1),
+    2:  (INP, 7, 2),
+    3:  (INP, 8, 2),
+    4:  (INP, 9, 2),
+    5:  (INP, 10, 2),
+    6:  (INP, 11, 2),
+    7:  (ADD, 8, 1),
+    8:  (ADD, 9, 1),
+    9: (ADD, 10, 1),
+    10: (ADD, 11, 1),
+    11: (ADD, 12, 1),
+    12: (DIV, 13, 1)
+  }
 
 # ___________________________________________________________________________
 
