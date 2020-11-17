@@ -1,5 +1,6 @@
 # secure multi-party computation, semi-honest case, distributed, v1
 # naranker dulay, dept of computing, imperial college, october 2020
+# tuck hong (tkh2017) and preet lalli (pl1516)
 
 import random     # seed
 import subprocess # Popen
@@ -17,8 +18,8 @@ from network import Network
 # ---------------------------------------------------------------------------
 
 def main():
-  print(f'CIRCUIT {CIRCUIT}')
-  print(f'ANSWER {FUNCTION_RESULT}')
+  print(f'CIRCUIT {CIRCUIT}', flush=True)
+  print(f'ANSWER {FUNCTION_RESULT}', flush=True)
 
   # create MPC party processes
   parties = {}

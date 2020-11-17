@@ -1,3 +1,5 @@
+# tuck hong (tkh2017) and preet lalli (pl1516)
+
 from circuit import *
 from modprime import *
 from network import *
@@ -14,8 +16,14 @@ def split_share(share):
     # constant term is = share
     polynomial.append(share)
 
+    message = str(share)
+
     for deg in range(DEGREE):
-        polynomial.append(randint())
+        rand_coeff = randint()
+        polynomial.append(rand_coeff)
+        message += ' + ' + str(rand_coeff) + 'x^' + str(deg + 1)
+
+    write('Random polynomial: ' + message)
 
     # allocate subshares for all parties
     subshares = {}
@@ -54,7 +62,7 @@ def lagrange_interp(subshares):
 
     share = summation(terms)
 
-    return share
+    return share, recomb_vector
 
 def evaluate_mul(a, b, gate_no, network):
     '''
@@ -68,13 +76,15 @@ def evaluate_mul(a, b, gate_no, network):
         network.send_share(subshares[p], gate_no, p)
         receivedshares[p] = network.receive_share(p, gate_no)
 
-    outputshare = lagrange_interp(receivedshares)
+    outputshare, _ = lagrange_interp(receivedshares)
+
+    write('Received shares are: ' + str(receivedshares))
 
     return outputshare
 
 def evaluate_div(a, gate_no, network):
     '''
-    Evaluates single DIV by party_no gate
+    Evaluates single DIV by N_PARTIES gate
     '''
     share = div(a, N_PARTIES)
     subshares = split_share(share)
@@ -84,35 +94,50 @@ def evaluate_div(a, gate_no, network):
         network.send_share(subshares[p], gate_no, p)
         receivedshares[p] = network.receive_share(p, gate_no)
 
-    outputshare = lagrange_interp(receivedshares)
+    outputshare, _ = lagrange_interp(receivedshares)
+
+    write('Received shares are: ' + str(receivedshares))
 
     return outputshare
 
 def evaluate_add(a, b):
     '''
     Evaluates single ADD gate
-    '''
+    ''' 
     return add(a,b)
 
-def evaluate_circuit(party_no, network):
+def evaluate_circuit(network):
     '''
     Evaluates whole circuit
     '''
     gate_inputs = {i: {k: None for k in range(1,3)} for i in range(1, N_GATES + 2)}
 
+    # for logging
+    input_shares = {}
+
     for g, (kind, output_gate, input_index) in GATES.items() :
 
         if kind == INP:
             result = network.receive_share(g, g)
+            input_shares[g] = result
+
+            # add to log once all input shares have been received
+            if g == N_PARTIES: 
+                write('Received shares are: ' + str(input_shares))
 
         elif kind == ADD:
             result = evaluate_add(gate_inputs[g][1], gate_inputs[g][2])
+            write('ADD result is: ' + str(result))
 
         elif kind == MUL:
+            write('Evaluating MUL gate')
             result = evaluate_mul(gate_inputs[g][1], gate_inputs[g][2], g, network)
+            write('MUL result is: ' + str(result))
 
         elif kind == DIV:
+            write('Evaluating DIV gate')
             result = evaluate_div(gate_inputs[g][1], g, network)
+            write('DIV result is: ' + str(result))
         
         gate_inputs[output_gate][input_index]= result
 
@@ -129,7 +154,7 @@ def bgw_protocol(party_no, private_value, network):
         network.send_share(subshares[p], party_no, p)
 
     # evaluate circuit
-    output = evaluate_circuit(party_no, network)
+    output = evaluate_circuit(network)
 
     # broadcast circuit output to all parties (including self)
     # N_GATES + 2 is the circuit output wire
@@ -142,7 +167,10 @@ def bgw_protocol(party_no, private_value, network):
     for p in ALL_PARTIES: 
         suboutputs[p] = network.receive_share(p, N_GATES + 1)
 
+    write('Received output shares are: ' + str(suboutputs))
+
     # combine outputs 
-    output = lagrange_interp(suboutputs)
-    
-    write(output)
+    output, recomb_vector = lagrange_interp(suboutputs)
+
+    write('The recombination vector is: ' + str(recomb_vector))
+    write('The final output is: ' + str(output))
