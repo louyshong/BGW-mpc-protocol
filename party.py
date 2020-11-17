@@ -122,7 +122,7 @@ def evaluate_circuit(network):
 
         elif kind == ADD:
             if written == False: 
-                write('Received shares are:' + str(input_shares))
+                write('Received shares are: ' + str(input_shares))
                 written = True
             result = evaluate_add(gate_inputs[g][1], gate_inputs[g][2])
             write('ADD result is: ' + str(result))
