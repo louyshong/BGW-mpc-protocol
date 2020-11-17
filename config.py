@@ -5,7 +5,7 @@
 VERBOSE = 0   # 0=quiet, 1+=increasing verbosity
 
 # set to True to use party no as seed, useful for debugging (mpc.py)
-REPEATABLE_RANDOM_NUMBERS = False
+REPEATABLE_RANDOM_NUMBERS = True
 
 # optional - set to True if you write a non-distributed (non-multiprocess) 
 #   version and wish to test (mpc.py)

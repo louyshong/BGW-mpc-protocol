@@ -85,7 +85,7 @@ def evaluate_mul(a, b, gate_no, network):
 
 def evaluate_div(a, gate_no, network):
     '''
-    Evaluates single DIV by party_no gate
+    Evaluates single DIV by N_PARTIES gate
     '''
     share = div(a, N_PARTIES)
     subshares = split_share(share)
@@ -111,16 +111,26 @@ def evaluate_circuit(network):
     '''
     gate_inputs = {i: {k: None for k in range(1,3)} for i in range(1, N_GATES + 2)}
 
+    # for logging
+    input_shares = {}
+    written = False
+
     for g, (kind, output_gate, input_index) in GATES.items() :
 
         if kind == INP:
             result = network.receive_share(g, g)
+            input_shares[g] = result
 
         elif kind == ADD:
             result = evaluate_add(gate_inputs[g][1], gate_inputs[g][2])
             write('ADD result is: ' + str(result))
 
         elif kind == MUL:
+            if written == False: 
+                write('Received shares are:')
+                write(input_shares)
+                written = True
+
             write('Evaluating MUL gate')
             result = evaluate_mul(gate_inputs[g][1], gate_inputs[g][2], g, network)
             write('MUL result is: ' + str(result))
