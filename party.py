@@ -88,6 +88,7 @@ def evaluate_div(a, gate_no, network):
     Evaluates single DIV by N_PARTIES gate
     '''
     share = div(a, N_PARTIES)
+    print(inv(N_PARTIES))
     subshares = split_share(share)
     receivedshares = {}
 
@@ -122,6 +123,10 @@ def evaluate_circuit(network):
             input_shares[g] = result
 
         elif kind == ADD:
+            if written == False: 
+                write('Received shares are:')
+                write(input_shares)
+                written = True
             result = evaluate_add(gate_inputs[g][1], gate_inputs[g][2])
             write('ADD result is: ' + str(result))
 
