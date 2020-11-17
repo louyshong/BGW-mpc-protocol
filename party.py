@@ -59,8 +59,6 @@ def lagrange_interp(subshares):
         terms.append(recomb_vector[p] * subshare)
 
     share = summation(terms)
-    # write('The recombined share is:')
-    # write(share)
 
     return share, recomb_vector
 
@@ -78,8 +76,7 @@ def evaluate_mul(a, b, gate_no, network):
 
     outputshare, _ = lagrange_interp(receivedshares)
 
-    write('Received shares are: ')
-    write(receivedshares)
+    write('Received shares are: ' + str(receivedshares))
 
     return outputshare
 
@@ -88,7 +85,6 @@ def evaluate_div(a, gate_no, network):
     Evaluates single DIV by N_PARTIES gate
     '''
     share = div(a, N_PARTIES)
-    print(inv(N_PARTIES))
     subshares = split_share(share)
     receivedshares = {}
 
@@ -98,8 +94,7 @@ def evaluate_div(a, gate_no, network):
 
     outputshare, _ = lagrange_interp(receivedshares)
 
-    write('Received shares are: ')
-    write(receivedshares)
+    write('Received shares are: ' + str(receivedshares))
 
     return outputshare
 
@@ -127,16 +122,14 @@ def evaluate_circuit(network):
 
         elif kind == ADD:
             if written == False: 
-                write('Received shares are:')
-                write(input_shares)
+                write('Received shares are:' + str(input_shares))
                 written = True
             result = evaluate_add(gate_inputs[g][1], gate_inputs[g][2])
             write('ADD result is: ' + str(result))
 
         elif kind == MUL:
             if written == False: 
-                write('Received shares are:')
-                write(input_shares)
+                write('Received shares are: ' + str(input_shares))
                 written = True
 
             write('Evaluating MUL gate')
@@ -176,9 +169,10 @@ def bgw_protocol(party_no, private_value, network):
     for p in ALL_PARTIES: 
         suboutputs[p] = network.receive_share(p, N_GATES + 1)
 
+    write('Received output shares are: ' + str(suboutputs))
+
     # combine outputs 
     output, recomb_vector = lagrange_interp(suboutputs)
 
-    write('The recombination vector is:')
-    write(recomb_vector)
+    write('The recombination vector is: ' + str(recomb_vector))
     write('The final output is: ' + str(output))
