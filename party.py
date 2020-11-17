@@ -98,6 +98,9 @@ def evaluate_div(a, gate_no, network):
 
     outputshare, _ = lagrange_interp(receivedshares)
 
+    write('Received shares are: ')
+    write(receivedshares)
+
     return outputshare
 
 def evaluate_add(a, b):
@@ -141,7 +144,9 @@ def evaluate_circuit(network):
             write('MUL result is: ' + str(result))
 
         elif kind == DIV:
+            write('Evaluating DIV gate')
             result = evaluate_div(gate_inputs[g][1], g, network)
+            write('DIV result is: ' + str(result))
         
         gate_inputs[output_gate][input_index]= result
 
