@@ -1,3 +1,5 @@
+# tuck hong (tkh2017) and preet lalli (pl1516)
+
 from circuit import *
 from modprime import *
 from network import *
@@ -112,7 +114,6 @@ def evaluate_circuit(network):
 
     # for logging
     input_shares = {}
-    written = False
 
     for g, (kind, output_gate, input_index) in GATES.items() :
 
@@ -120,18 +121,15 @@ def evaluate_circuit(network):
             result = network.receive_share(g, g)
             input_shares[g] = result
 
-        elif kind == ADD:
-            if written == False: 
+            # add to log once all input shares have been received
+            if g == N_PARTIES: 
                 write('Received shares are: ' + str(input_shares))
-                written = True
+
+        elif kind == ADD:
             result = evaluate_add(gate_inputs[g][1], gate_inputs[g][2])
             write('ADD result is: ' + str(result))
 
         elif kind == MUL:
-            if written == False: 
-                write('Received shares are: ' + str(input_shares))
-                written = True
-
             write('Evaluating MUL gate')
             result = evaluate_mul(gate_inputs[g][1], gate_inputs[g][2], g, network)
             write('MUL result is: ' + str(result))

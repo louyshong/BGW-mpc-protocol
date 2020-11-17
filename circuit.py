@@ -1,8 +1,9 @@
 # secure multi-party computation, semi-honest case, distributed, v1
 # naranker dulay, dept of computing, imperial college, october 2020
+# tuck hong (tkh2017) and preet lalli (pl1516)
 
 # Circuit below to evalute
-CIRCUIT = 3
+CIRCUIT = 1
 
 # Gate types
 INP, ADD, MUL, DIV = (0,1,2,3)
@@ -80,21 +81,20 @@ elif CIRCUIT == 3:	# add your circuit(s) here
   # degree of polynominal - T in slides
   DEGREE = 2
 
-  def inv(a):
-    # compute multiplicative inverse (mod p) using fermat's little theorem 
-    return pow(a, PRIME-2, PRIME)
-
-  def div(a, b):
-    return mul(a, inv(b))
-
-  def mul(a, b):
-    return (a * b) % PRIME
-
-  inverse = inv(6)
-
   PRIVATE_VALUES = {1:4, 2:5, 3:3, 4:2, 5:7, 6:3}
 
   def function(x):	# function being evaluated by parties
+    # these functions are copied from modprime.py
+    # to prevent circular import issue
+    def inv(a):
+      return pow(a, PRIME-2, PRIME)
+
+    def mul(a, b):
+      return (a * b) % PRIME
+  
+    def div(a, b):
+      return mul(a, inv(b))
+
     return (div((x[1] + x[2] + x[3] + x[4] + x[5] + x[6]), 6)) % PRIME
 
   GATES = {
@@ -106,7 +106,7 @@ elif CIRCUIT == 3:	# add your circuit(s) here
     6:  (INP, 11, 2),
     7:  (ADD, 8, 1),
     8:  (ADD, 9, 1),
-    9: (ADD, 10, 1),
+    9:  (ADD, 10, 1),
     10: (ADD, 11, 1),
     11: (ADD, 12, 1),
     12: (DIV, 13, 1)
