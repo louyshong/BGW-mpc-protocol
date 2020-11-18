@@ -68,14 +68,17 @@ def evaluate_mul(a, b, gate_no, network):
     '''
     Evaluates single MUL gate
     '''
+    # modulo multiplication
     share = mul(a,b)
     subshares = split_share(share)
     receivedshares = {}
 
+    # send and receive subshares
     for p in ALL_PARTIES:
         network.send_share(subshares[p], gate_no, p)
         receivedshares[p] = network.receive_share(p, gate_no)
 
+    # lagrange interpolate received subshares
     outputshare, _ = lagrange_interp(receivedshares)
 
     write('Received shares are: ' + str(receivedshares))
@@ -86,14 +89,17 @@ def evaluate_div(a, gate_no, network):
     '''
     Evaluates single DIV by N_PARTIES gate
     '''
+    # modulo division
     share = div(a, N_PARTIES)
     subshares = split_share(share)
     receivedshares = {}
 
+    # send and receive subshares
     for p in ALL_PARTIES:
         network.send_share(subshares[p], gate_no, p)
         receivedshares[p] = network.receive_share(p, gate_no)
 
+    # lagrange interpolate received subshares
     outputshare, _ = lagrange_interp(receivedshares)
 
     write('Received shares are: ' + str(receivedshares))
