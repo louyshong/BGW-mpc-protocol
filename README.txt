@@ -2,7 +2,7 @@ Tuck Hong tkh2017 and Preet Lalli pl1516
 
 BGW-Protocol MPC Coursework
 
-This folder contains an implementation of the BGW protocol and an additional arithmetic circuit that performs an average of 6 inputs.
+This folder contains an implementation of the BGW protocol and an additional arithmetic circuit that calculates the average of 6 inputs.
 
 Dependencies : 
  pip3 install pyzmq

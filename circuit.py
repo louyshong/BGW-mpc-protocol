@@ -15,7 +15,7 @@ INP, ADD, MUL, DIV = (0,1,2,3)
 if CIRCUIT == 1: 	# example in Smart
   # ___________________________________________________________________________
   # polynomial prime - further primes at bottom of file
-  PRIME  = 1_009 
+  PRIME  = 101
   # degree of polynominal - T in slides
   DEGREE = 2
 
